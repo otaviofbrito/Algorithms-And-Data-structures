@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 
 typedef struct {
     unsigned int peso;
@@ -8,6 +9,8 @@ typedef struct {
 
 
 int max(int a, int b) { return (a > b) ? a : b; }
+
+
 
 //dinamica bottom-up
 int algoritmo_1(int capacidade, type_item items[], int n) {
@@ -20,21 +23,47 @@ int algoritmo_1(int capacidade, type_item items[], int n) {
                 K[i][w] = 0;
             }else if(items[i-1].peso <= w){
                 K[i][w] = max(items[i-1].beneficio + K[i-1][w - items[i-1].peso], K[i-1][w]);
-            }else{
+            }else {
                 K[i][w] = K[i-1][w];
             }
         }
     }
-
     return K[n][capacidade];
  }
 
 
+int algoritmo_2(int capacidade, type_item items[], int n, int val) {
+    int tempPeso;
+    int tempBeneficio;
+    int bestPeso = 0;
+    int bestBenefico = 0;
+    int *ar = (int *) calloc(capacidade, sizeof(int));
+    int j,k;
+    for(int i = 1; i< pow(2,n); i++){
+        j = n;
+        tempPeso = 0;
+        tempBeneficio = 0;
+
+        while(ar[j] != 0 && j>0){
+            ar[j] = 0;
+            j--;
+        }
+        ar[j] = 1;
+        for(k = 0; k < n; k++){
+            if(ar[k]==1){
+                tempPeso = tempPeso + items[k].peso;
+                tempBeneficio = tempBeneficio + items[k].beneficio;
+            }
+        }
+        if((tempBeneficio > bestBenefico) && (tempPeso <= capacidade)){
+            bestBenefico = tempBeneficio;
+            bestPeso = tempPeso;
+        }
+    }
+    return bestBenefico;
+ }
 
 
-
-
-void algoritmo_2(void) { }
 void algoritmo_3(void) { }
 
 void imprimir_items(type_item *items, int n) {
@@ -81,7 +110,7 @@ int main(int argc, char *argv[]) {
         printf("teste");
        printf("%d", algoritmo_1(capacidad, items, n_items) );
     } else if (argv[2] == "2") {
-        algoritmo_2();
+        algoritmo_2(capacidad, items, n_items, 0);
     } else if (argv[2] == "3") {
         algoritmo_3();
     } else {
