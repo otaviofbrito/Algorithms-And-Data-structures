@@ -10,25 +10,18 @@ typedef struct
     int beneficio;
 } type_item;
 
-void printArray(double A[], int size)
-{
-    int i;
-    for (i = 0; i < size; i++)
-        printf("%f ", A[i]);
-    printf("\n");
-}
 
 int max(int a, int b) { return (a > b) ? a : b; }
 
 // sorting for greedy algorithim
-void merge(double arr[], int l, int m, int r)
+void merge(type_item arr[], int l, int m, int r)
 {
     int i, j, k;
     int n1 = m - l + 1;
     int n2 = r - m;
 
     /* create temp arrays */
-    double L[n1], R[n2];
+    type_item L[n1], R[n2];
 
     /* Copy data to temp arrays L[] and R[] */
     for (i = 0; i < n1; i++)
@@ -42,7 +35,7 @@ void merge(double arr[], int l, int m, int r)
     k = l; // Initial index of merged subarray
     while (i < n1 && j < n2)
     {
-        if (L[i] >= R[j])
+        if ((double)L[i].beneficio/L[i].peso >= (double)R[j].beneficio/R[j].peso)
         {
             arr[k] = L[i];
             i++;
@@ -74,7 +67,7 @@ void merge(double arr[], int l, int m, int r)
     }
 }
 
-void mergeSort(double arr[], int l, int r)
+void mergeSort(type_item arr[], int l, int r)
 {
     if (l < r)
     {
@@ -154,27 +147,22 @@ int algoritmo_2(int capacidade, type_item items[], int n)
     return bestBenefico;
 }
 
+//greedy
 int algoritmo_3(int capacidade, type_item items[], int n)
 {
     int solution = 0;
     int i = 0;
-    type_item *ratio = (type_item *)calloc(capacidade, sizeof(type_item));
-    ratio = items;
-    for (i = 0; i < n; i++)
-    {
-        ratio[i].beneficio = (double)items[i].beneficio / (double)items[i].peso;
-    }
-    mergeSort(ratio, 0, n);
+ 
+    mergeSort(items, 0, n);
     for (int k = 0; k < n; k++)
     {
-        if (ratio[k].peso <= capacidade)
+        if (items[k].peso <= capacidade)
         {
             solution = solution + items[k].beneficio;
             capacidade = capacidade - items[k].peso;
         }
     }
 
-    free(ratio);
     return solution;
 }
 
