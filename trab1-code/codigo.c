@@ -26,9 +26,9 @@ void merge(type_item arr[], int l, int m, int r)
     for (j = 0; j < n2; j++)
         R[j] = arr[m + 1 + j];
 
-    i = 0; 
-    j = 0; 
-    k = l; 
+    i = 0;
+    j = 0;
+    k = l;
     while (i < n1 && j < n2)
     {
         if ((double)L[i].beneficio / L[i].peso >= (double)R[j].beneficio / R[j].peso)
@@ -222,7 +222,7 @@ int main(int argc, char *argv[])
     free(items);
 
     double elapsed_time = (double)(clock() - start_time) / CLOCKS_PER_SEC;
-    printf("Done in %f seconds\n", elapsed_time);
+    printf("Done in %f ms\n", elapsed_time * 1000);
 
     return 0;
 }
