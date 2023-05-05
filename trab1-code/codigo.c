@@ -10,7 +10,6 @@ typedef struct
     int beneficio;
 } type_item;
 
-
 int max(int a, int b) { return (a > b) ? a : b; }
 
 // sorting for greedy algorithim
@@ -20,22 +19,19 @@ void merge(type_item arr[], int l, int m, int r)
     int n1 = m - l + 1;
     int n2 = r - m;
 
-    /* create temp arrays */
     type_item L[n1], R[n2];
 
-    /* Copy data to temp arrays L[] and R[] */
     for (i = 0; i < n1; i++)
         L[i] = arr[l + i];
     for (j = 0; j < n2; j++)
         R[j] = arr[m + 1 + j];
 
-    /* Merge the temp arrays back into arr[l..r]*/
-    i = 0; // Initial index of first subarray
-    j = 0; // Initial index of second subarray
-    k = l; // Initial index of merged subarray
+    i = 0; 
+    j = 0; 
+    k = l; 
     while (i < n1 && j < n2)
     {
-        if ((double)L[i].beneficio/L[i].peso >= (double)R[j].beneficio/R[j].peso)
+        if ((double)L[i].beneficio / L[i].peso >= (double)R[j].beneficio / R[j].peso)
         {
             arr[k] = L[i];
             i++;
@@ -48,8 +44,6 @@ void merge(type_item arr[], int l, int m, int r)
         k++;
     }
 
-    /* Copy the remaining elements of L[], if there
-    are any */
     while (i < n1)
     {
         arr[k] = L[i];
@@ -57,8 +51,6 @@ void merge(type_item arr[], int l, int m, int r)
         k++;
     }
 
-    /* Copy the remaining elements of R[], if there
-    are any */
     while (j < n2)
     {
         arr[k] = R[j];
@@ -84,28 +76,23 @@ void mergeSort(type_item arr[], int l, int r)
 // dinamica bottom-up
 int algoritmo_1(int capacidade, type_item items[], int n)
 {
-    int i, w;
-    int K[n + 1][capacidade + 1];
+    int i, j;
+    int tabela[2][capacidade + 1];
 
     for (i = 0; i <= n; i++)
     {
-        for (w = 0; w <= capacidade; w++)
+        for (j = 0; j <= capacidade; j++)
         {
-            if (i == 0 || w == 0)
-            {
-                K[i][w] = 0;
-            }
-            else if (items[i - 1].peso <= w)
-            {
-                K[i][w] = max(items[i - 1].beneficio + K[i - 1][w - items[i - 1].peso], K[i - 1][w]);
-            }
+            if (i == 0 || j == 0)
+                tabela[i % 2][j] = 0;
+            else if (items[i - 1].peso <= j)
+                tabela[i % 2][j] = max(items[i - 1].beneficio + tabela[(i - 1) % 2][j - items[i - 1].peso],
+                                       tabela[(i - 1) % 2][j]);
             else
-            {
-                K[i][w] = K[i - 1][w];
-            }
+                tabela[i % 2][j] = tabela[(i - 1) % 2][j];
         }
     }
-    return K[n][capacidade];
+    return tabela[n % 2][capacidade];
 }
 
 // bruteforce
@@ -147,12 +134,12 @@ int algoritmo_2(int capacidade, type_item items[], int n)
     return bestBenefico;
 }
 
-//greedy
+// greedy
 int algoritmo_3(int capacidade, type_item items[], int n)
 {
     int solution = 0;
     int i = 0;
- 
+
     mergeSort(items, 0, n);
     for (int k = 0; k < n; k++)
     {
