@@ -194,7 +194,7 @@ int main(int argc, char *argv[])
     int n_items, capacidad;
 
     if (argc != 3)
-    {
+    {   
         printf("Uso: %s <nome do arquivo de entrada> <algoritmo>\n", argv[0]);
         return 1;
     }
