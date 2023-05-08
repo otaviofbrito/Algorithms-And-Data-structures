@@ -4,6 +4,10 @@
 #include <time.h>
 #include <string.h>
 
+/**
+ * @brief 
+ * 
+ */
 typedef struct
 {
     unsigned int peso;
@@ -12,7 +16,14 @@ typedef struct
 
 int max(int a, int b) { return (a > b) ? a : b; }
 
-// sorting for greedy algorithim
+/**
+ * @brief 
+ * 
+ * @param arr 
+ * @param l 
+ * @param m 
+ * @param r 
+ */
 void merge(type_item arr[], int l, int m, int r)
 {
     int i, j, k;
@@ -59,6 +70,13 @@ void merge(type_item arr[], int l, int m, int r)
     }
 }
 
+/**
+ * @brief 
+ * 
+ * @param arr 
+ * @param l 
+ * @param r 
+ */
 void mergeSort(type_item arr[], int l, int r)
 {
     if (l < r)
@@ -73,7 +91,14 @@ void mergeSort(type_item arr[], int l, int r)
     }
 }
 
-// dinamica bottom-up
+/**
+ * @brief 
+ * 
+ * @param capacidade 
+ * @param items 
+ * @param n 
+ * @return int 
+ */
 int algoritmo_1(int capacidade, type_item items[], int n)
 {
     int i, j;
@@ -95,7 +120,14 @@ int algoritmo_1(int capacidade, type_item items[], int n)
     return tabela[n % 2][capacidade];
 }
 
-// bruteforce
+/**
+ * @brief 
+ * 
+ * @param capacidade 
+ * @param items 
+ * @param n 
+ * @return int 
+ */
 int algoritmo_2(int capacidade, type_item items[], int n)
 {
     int bestPeso = 0;
@@ -134,7 +166,14 @@ int algoritmo_2(int capacidade, type_item items[], int n)
     return bestBenefico;
 }
 
-// greedy
+/**
+ * @brief 
+ * 
+ * @param capacidade 
+ * @param items 
+ * @param n 
+ * @return int 
+ */
 int algoritmo_3(int capacidade, type_item items[], int n)
 {
     int solution = 0;
@@ -227,5 +266,3 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-/// usr/bin/time -v myapp
-// valgrind myapp

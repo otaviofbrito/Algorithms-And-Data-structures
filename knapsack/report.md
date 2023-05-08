@@ -6,7 +6,7 @@
 | :------------------- | :----------: | :----------: | :---------------: |
 | Programação Dinâmica |      35      |      35      |      0.046ms      |
 | Força Bruta          |      35      |      35      |       0.1ms       |
-| Greedy Algoritmo     |      35      |      35      |      0.044ms      |
+| Algoritmo Guloso     |      35      |      35      |      0.044ms      |
 
 <br />
 
@@ -16,7 +16,7 @@
 | :------------------- | :----------: | :----------: | :---------------: |
 | Programação Dinâmica |     295      |     295      |      0.114ms      |
 | Força Bruta          |     295      |     295      |      0.155ms      |
-| Greedy Algoritmo     |  **_294_**   |     295      |      0.052ms      |
+| Algoritmo Guloso     |  **_294_**   |     295      |      0.052ms      |
 
 <br />
 
@@ -26,7 +26,7 @@
 | :------------------- | :----------: | :----------: | :---------------: |
 | Programação Dinâmica |     1024     |     1024     |      0.23ms       |
 | Força Bruta          |     1024     |     1024     |      99.98ms      |
-| Greedy Algoritmo     |  **_1018_**  |     1024     |      0.095ms      |
+| Algoritmo Guloso     |  **_1018_**  |     1024     |      0.095ms      |
 
 ---
 
@@ -44,7 +44,7 @@
 | Algoritmo            | Valor obtido | Valor máximo | Tempo de execução |
 | :------------------- | :----------: | :----------: | :---------------: |
 | Programação Dinâmica |     9147     |     9147     |      0.93ms       |
-| Greedy Algoritmo     |  **_8817_**  |     9147     |      0.269ms      |
+| Algoritmo Guloso     |  **_8817_**  |     9147     |      0.269ms      |
 
 <br />
 
@@ -53,7 +53,7 @@
 | Algoritmo            | Valor obtido | Valor máximo | Tempo de execução |
 | :------------------- | :----------: | :----------: | :---------------: |
 | Programação Dinâmica |    11238     |    11238     |      1.292ms      |
-| Greedy Algoritmo     | **_11227_**  |    11238     |      0.621ms      |
+| Algoritmo Guloso     | **_11227_**  |    11238     |      0.621ms      |
 
 <br />
 
@@ -62,7 +62,7 @@
 | Algoritmo            | Valor obtido | Valor máximo | Tempo de execução |
 | :------------------- | :----------: | :----------: | :---------------: |
 | Programação Dinâmica |    28857     |    28857     |        9ms        |
-| Greedy Algoritmo     | **_28834_**  |    28857     |      0.97ms       |
+| Algoritmo Guloso     | **_28834_**  |    28857     |      0.97ms       |
 
 <br />
 
@@ -71,7 +71,7 @@
 | Algoritmo            | Valor obtido | Valor máximo | Tempo de execução |
 | :------------------- | :----------: | :----------: | :---------------: |
 | Programação Dinâmica |    54503     |    54503     |       35ms        |
-| Greedy Algoritmo     | **_54386_**  |    54503     |       2.7ms       |
+| Algoritmo Guloso     | **_54386_**  |    54503     |       2.7ms       |
 
 ---
 
@@ -87,7 +87,7 @@
 | Algoritmo            | Valor obtido | Valor máximo | Tempo de execução |
 | :------------------- | :----------: | :----------: | :---------------: |
 | Programação Dinâmica |     1514     |     1514     |      0.807ms      |
-| Greedy Algoritmo     |  **_1487_**  |     1514     |      0.327ms      |
+| Algoritmo Guloso     |  **_1487_**  |     1514     |      0.327ms      |
 
 <br />
 
@@ -96,7 +96,7 @@
 | Algoritmo            | Valor obtido | Valor máximo | Tempo de execução |
 | :------------------- | :----------: | :----------: | :---------------: |
 | Programação Dinâmica |     1634     |     1634     |       3.1ms       |
-| Greedy Algoritmo     |  **_1604_**  |     1634     |      0.81ms       |
+| Algoritmo Guloso     |  **_1604_**  |     1634     |      0.81ms       |
 
 <br />
 
@@ -105,7 +105,7 @@
 | Algoritmo            | Valor obtido | Valor máximo | Tempo de execução |
 | :------------------- | :----------: | :----------: | :---------------: |
 | Programação Dinâmica |     4566     |     4566     |      9.23ms       |
-| Greedy Algoritmo     |  **_4552_**  |     4566     |      1.37ms       |
+| Algoritmo Guloso     |  **_4552_**  |     4566     |      1.37ms       |
 
 <br />
 
@@ -114,7 +114,7 @@
 | Algoritmo            | Valor obtido | Valor máximo | Tempo de execução |
 | :------------------- | :----------: | :----------: | :---------------: |
 | Programação Dinâmica |     9052     |     9052     |       33ms        |
-| Greedy Algoritmo     |  **_9046_**  |     9052     |       2.2ms       |
+| Algoritmo Guloso     |  **_9046_**  |     9052     |       2.2ms       |
 
 ---
 
@@ -130,7 +130,7 @@
 | Algoritmo            | Valor obtido | Valor máximo | Tempo de execução |
 | :------------------- | :----------: | :----------: | :---------------: |
 | Programação Dinâmica |     2397     |     2397     |      1.55ms       |
-| Greedy Algoritmo     |  **_2375_**  |     2397     |      0.172ms      |
+| Algoritmo Guloso     |  **_2375_**  |     2397     |      0.172ms      |
 
 <br />
 
@@ -139,7 +139,7 @@
 | Algoritmo            | Valor obtido | Valor máximo | Tempo de execução |
 | :------------------- | :----------: | :----------: | :---------------: |
 | Programação Dinâmica |     2697     |     2697     |      3.17ms       |
-| Greedy Algoritmo     |  **_2649_**  |     2697     |      0.48ms       |
+| Algoritmo Guloso     |  **_2649_**  |     2697     |      0.48ms       |
 
 <br />
 
@@ -148,7 +148,7 @@
 | Algoritmo            | Valor obtido | Valor máximo | Tempo de execução |
 | :------------------- | :----------: | :----------: | :---------------: |
 | Programação Dinâmica |     7117     |     7117     |      9.04ms       |
-| Greedy Algoritmo     |  **_7098_**  |     7117     |      1.48ms       |
+| Algoritmo Guloso     |  **_7098_**  |     7117     |      1.48ms       |
 
 <br />
 
@@ -157,4 +157,4 @@
 | Algoritmo            | Valor obtido | Valor máximo | Tempo de execução |
 | :------------------- | :----------: | :----------: | :---------------: |
 | Programação Dinâmica |    14390     |    14390     |      33.9ms       |
-| Greedy Algoritmo     | **_14374_**  |    14390     |      1.97ms       |
+| Algoritmo Guloso     | **_14374_**  |    14390     |      1.97ms       |
