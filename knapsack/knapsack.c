@@ -1,28 +1,40 @@
+/*
+
+    0/1 Knapsack problem with Dynamic Programming, Brute Force and Greedy Algorithm.
+
+    To run the program, just compile the file with the command "gcc -o main knapsack.c" and execute with the command "./main <test file name> <selected algorithm>". #1 for Dynamic Programming, #2 for Brute Force and #3 for Greedy Algorithm.
+
+*/
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
 #include <time.h>
 #include <string.h>
 
-/**
- * @brief 
- * 
- */
+
 typedef struct
 {
     unsigned int peso;
     int beneficio;
 } type_item;
 
+/**
+ * @brief Função de utilidade que recebe 2 inteiros e retorna o maior deles.
+ * 
+ * @param a primeiro inteiro a ser comparado
+ * @param b segundo inteiro a ser comparado
+ * @return maior inteiro entre os 2
+ */
 int max(int a, int b) { return (a > b) ? a : b; }
 
 /**
- * @brief 
+ * @brief funcao merge para o mergeSort
  * 
- * @param arr 
- * @param l 
- * @param m 
- * @param r 
+ * @param arr struct com os vetores peso e benefício
+ * @param l esquerda
+ * @param m meio
+ * @param r direita
  */
 void merge(type_item arr[], int l, int m, int r)
 {
@@ -71,11 +83,11 @@ void merge(type_item arr[], int l, int m, int r)
 }
 
 /**
- * @brief 
+ * @brief Algoritmo de ordenação mergeSort que ordena os itens pelo benefício/peso de forma decrescente para ser usado no algoritmo guloso.
  * 
- * @param arr 
- * @param l 
- * @param r 
+ * @param arr struct com os vetores peso e benefício
+ * @param l esquerda
+ * @param r direita
  */
 void mergeSort(type_item arr[], int l, int r)
 {
@@ -84,30 +96,37 @@ void mergeSort(type_item arr[], int l, int r)
 
         int m = l + (r - l) / 2;
 
+        //chamada recursiva para a primeira e segunda metade
         mergeSort(arr, l, m);
         mergeSort(arr, m + 1, r);
 
+        //faz o merge das metades ordenadas
         merge(arr, l, m, r);
     }
 }
 
 /**
- * @brief 
+ * @brief Função que implementa o algoritmo de programação dinâmica para o problema da mochila.
+ * A função recebe a capacidade da mochila, uma struct com os vetores peso e benefício e o número de itens.
+ * A função deve retornar o valor máximo que pode ser colocado na mochila.
+ *  
  * 
- * @param capacidade 
- * @param items 
- * @param n 
- * @return int 
+ * @param capacidade Capacidade da mochila 
+ * @param items struct com os vetores peso e benefício
+ * @param n numero de itens
+ * @return retorna o valor do vetor na ultima posição
  */
-int algoritmo_1(int capacidade, type_item items[], int n)
+int progDinamica(int capacidade, type_item items[], int n)
 {
     int i, j;
     int tabela[2][capacidade + 1];
 
     for (i = 0; i <= n; i++)
     {
+        // Preenche a tabela[][] de baixo para cima
         for (j = 0; j <= capacidade; j++)
         {
+            // Caso base
             if (i == 0 || j == 0)
                 tabela[i % 2][j] = 0;
             else if (items[i - 1].peso <= j)
@@ -117,18 +136,20 @@ int algoritmo_1(int capacidade, type_item items[], int n)
                 tabela[i % 2][j] = tabela[(i - 1) % 2][j];
         }
     }
+    // Retorna o valor máximo que pode ser colocado na mochila
     return tabela[n % 2][capacidade];
 }
 
 /**
- * @brief 
+ * @brief Recebe a capacidade da mochila, uma struct com os vetores peso e benefício e o número de itens.
+ * Tenta todas as possiblidades de combinações de itens e retorna o valor máximo que pode ser colocado na mochila.
  * 
  * @param capacidade 
  * @param items 
  * @param n 
- * @return int 
+ * @return retorna o valor máximo de benefício que pode ser colocado na mochila. 
  */
-int algoritmo_2(int capacidade, type_item items[], int n)
+int forcaBruta(int capacidade, type_item items[], int n)
 {
     int bestPeso = 0;
     int bestBenefico = 0;
@@ -167,14 +188,15 @@ int algoritmo_2(int capacidade, type_item items[], int n)
 }
 
 /**
- * @brief 
+ * @brief Ordena os itens pelo benefício/peso e coloca os itens na mochila até que não caiba mais.
+ * a ordenação é feita pelo algoritmo mergeSort de forma decrescente.
  * 
  * @param capacidade 
  * @param items 
  * @param n 
- * @return int 
+ * @return retorna o valor máximo de benefício que pode ser colocado na mochila. 
  */
-int algoritmo_3(int capacidade, type_item items[], int n)
+int algGuloso(int capacidade, type_item items[], int n)
 {
     int solution = 0;
     int i = 0;
@@ -182,10 +204,12 @@ int algoritmo_3(int capacidade, type_item items[], int n)
     mergeSort(items, 0, n);
     for (int k = 0; k < n; k++)
     {
+        //Verifica se o itme cabe na mochila
         if (items[k].peso <= capacidade)
         {
+            //Adiciona o item na mochila
             solution = solution + items[k].beneficio;
-            capacidade = capacidade - items[k].peso;
+            capacidade = capacidade - items[k].peso; //decrementa a capacidade da mochila
         }
     }
 
@@ -243,15 +267,15 @@ int main(int argc, char *argv[])
 
     if (strcmp(argv[2], "1") == 0)
     {
-        printf("%d\n", algoritmo_1(capacidad, items, n_items));
+        printf("%d\n", progDinamica(capacidad, items, n_items));
     }
     else if (strcmp(argv[2], "2") == 0)
     {
-        printf("%d\n", algoritmo_2(capacidad, items, n_items));
+        printf("%d\n", forcaBruta(capacidad, items, n_items));
     }
     else if (strcmp(argv[2], "3") == 0)
     {
-        printf("%d\n", algoritmo_3(capacidad, items, n_items));
+        printf("%d\n", algGuloso(capacidad, items, n_items));
     }
     else
     {
