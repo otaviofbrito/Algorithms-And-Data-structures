@@ -12,7 +12,6 @@
 #include <time.h>
 #include <string.h>
 
-
 typedef struct
 {
     unsigned int peso;
@@ -21,7 +20,7 @@ typedef struct
 
 /**
  * @brief Função de utilidade que recebe 2 inteiros e retorna o maior deles.
- * 
+ *
  * @param a primeiro inteiro a ser comparado
  * @param b segundo inteiro a ser comparado
  * @return maior inteiro entre os 2
@@ -30,7 +29,7 @@ int max(int a, int b) { return (a > b) ? a : b; }
 
 /**
  * @brief funcao merge para o mergeSort
- * 
+ *
  * @param arr struct com os vetores peso e benefício
  * @param l esquerda
  * @param m meio
@@ -84,7 +83,7 @@ void merge(type_item arr[], int l, int m, int r)
 
 /**
  * @brief Algoritmo de ordenação mergeSort que ordena os itens pelo benefício/peso de forma decrescente para ser usado no algoritmo guloso.
- * 
+ *
  * @param arr struct com os vetores peso e benefício
  * @param l esquerda
  * @param r direita
@@ -96,11 +95,11 @@ void mergeSort(type_item arr[], int l, int r)
 
         int m = l + (r - l) / 2;
 
-        //chamada recursiva para a primeira e segunda metade
+        // chamada recursiva para a primeira e segunda metade
         mergeSort(arr, l, m);
         mergeSort(arr, m + 1, r);
 
-        //faz o merge das metades ordenadas
+        // faz o merge das metades ordenadas
         merge(arr, l, m, r);
     }
 }
@@ -109,9 +108,9 @@ void mergeSort(type_item arr[], int l, int r)
  * @brief Função que implementa o algoritmo de programação dinâmica para o problema da mochila.
  * A função recebe a capacidade da mochila, uma struct com os vetores peso e benefício e o número de itens.
  * A função deve retornar o valor máximo que pode ser colocado na mochila.
- *  
- * 
- * @param capacidade Capacidade da mochila 
+ *
+ *
+ * @param capacidade Capacidade da mochila
  * @param items struct com os vetores peso e benefício
  * @param n numero de itens
  * @return retorna o valor do vetor na ultima posição
@@ -143,11 +142,11 @@ int progDinamica(int capacidade, type_item items[], int n)
 /**
  * @brief Recebe a capacidade da mochila, uma struct com os vetores peso e benefício e o número de itens.
  * Tenta todas as possiblidades de combinações de itens e retorna o valor máximo que pode ser colocado na mochila.
- * 
- * @param capacidade 
- * @param items 
- * @param n 
- * @return retorna o valor máximo de benefício que pode ser colocado na mochila. 
+ *
+ * @param capacidade
+ * @param items
+ * @param n
+ * @return retorna o valor máximo de benefício que pode ser colocado na mochila.
  */
 int forcaBruta(int capacidade, type_item items[], int n)
 {
@@ -190,11 +189,11 @@ int forcaBruta(int capacidade, type_item items[], int n)
 /**
  * @brief Ordena os itens pelo benefício/peso e coloca os itens na mochila até que não caiba mais.
  * a ordenação é feita pelo algoritmo mergeSort de forma decrescente.
- * 
- * @param capacidade 
- * @param items 
- * @param n 
- * @return retorna o valor máximo de benefício que pode ser colocado na mochila. 
+ *
+ * @param capacidade
+ * @param items
+ * @param n
+ * @return retorna o valor máximo de benefício que pode ser colocado na mochila.
  */
 int algGuloso(int capacidade, type_item items[], int n)
 {
@@ -204,12 +203,12 @@ int algGuloso(int capacidade, type_item items[], int n)
     mergeSort(items, 0, n);
     for (int k = 0; k < n; k++)
     {
-        //Verifica se o itme cabe na mochila
+        // Verifica se o itme cabe na mochila
         if (items[k].peso <= capacidade)
         {
-            //Adiciona o item na mochila
+            // Adiciona o item na mochila
             solution = solution + items[k].beneficio;
-            capacidade = capacidade - items[k].peso; //decrementa a capacidade da mochila
+            capacidade = capacidade - items[k].peso; // decrementa a capacidade da mochila
         }
     }
 
@@ -257,7 +256,7 @@ int main(int argc, char *argv[])
     int n_items, capacidad;
 
     if (argc != 3)
-    {   
+    {
         printf("Uso: %s <nome do arquivo de entrada> <algoritmo>\n", argv[0]);
         return 1;
     }
@@ -289,4 +288,3 @@ int main(int argc, char *argv[])
 
     return 0;
 }
-
