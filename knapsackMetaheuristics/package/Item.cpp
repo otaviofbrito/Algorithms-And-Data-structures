@@ -1,46 +1,28 @@
-class Item {
-  private:
-    int peso;
-    int beneficio;
-    double ratio;
-    bool position = 0;
+#include "Item.h"
 
-  public:
-    Item(int o_peso, int o_beneficio){
-      peso = o_peso;
-      beneficio = o_beneficio;
-    }
 
-    void setPeso(int o_peso){
-      peso = o_peso;
-    }
+Item::Item(int o_peso, int o_beneficio)
+{
+  peso = o_peso;
+  beneficio = o_beneficio;
+}
 
-    void setBeneficio(int o_beneficio){
-      beneficio = o_beneficio;
-    }
+void Item::setPeso(int o_peso)
+{
+  peso = o_peso;
+}
 
-    void setRatio(double o_ratio){
-      ratio = o_ratio;
-    }
+void Item::setBeneficio(int o_beneficio)
+{
+  beneficio = o_beneficio;
+}
 
-    void setPosition(bool o_position){
-      position = o_position;
-    }
+void Item::setRatio(double o_ratio)
+{
+  ratio = o_ratio;
+}
 
-    int getPeso(){
-      return peso;
-    }
-
-    int getBeneficio(){
-      return beneficio;
-    }
-
-    double getRatio(){
-      return ratio;
-    }
-
-    bool getPosition(){
-      return position;
-    }
-
-};
+void Item::setPosition(bool o_position)
+{
+  position = o_position;
+}
