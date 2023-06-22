@@ -33,4 +33,12 @@ class Itens {
       return itens.size();
     }
 
+    std::vector<Item *> getList(){
+      return itens;
+    }
+
+    bool isGreater(Item *item1, Item *item2){
+      return item1->getRatio()>item2->getRatio();
+    }
+
 };

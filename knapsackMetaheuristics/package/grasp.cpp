@@ -1,12 +1,30 @@
 #include <string.h>
 #include <iostream>
 #include <fstream>
+#include <algorithm> 
+
 #include "Mochila.cpp"
 #include "Itens.cpp"
 #include "Item.cpp"
 
 
 using namespace std;
+
+
+struct less_than_key
+{
+    inline bool operator() (const Item &item1, const Item &item2)
+    {
+        return (item1.getRatio() > item2.getRatio());
+    }
+};
+
+
+Mochila *guloso_aleatorio(Itens *itens, float r = 0.1){
+
+  sort(itens->getList().begin(), itens->getList().end(), itens->isGreater());
+
+}
 
 Itens *scant_test(char const *file_name, int *n_items, int *capacidad)
 {
@@ -28,10 +46,11 @@ Itens *scant_test(char const *file_name, int *n_items, int *capacidad)
   itens->setQuantidade(*n_items);
 
   for(int i = 0; i < *n_items; i++){
-    int pes = 0, ben = 0;
+    int pes, ben;
     test_file >> pes;
     test_file >> ben;
     Item *item = new Item(pes, ben);
+    item->setRatio((double)item->getBeneficio()/(double)item->getPeso());
     itens->setItem(item);
   }
 
