@@ -7,7 +7,7 @@ using namespace std;
 class Mochila {
   private:
     int capacidade;
-    vector<Item> itens;
+    vector<Item *> itens;
 
   public:
     Mochila(int o_capacidade){
@@ -18,7 +18,7 @@ class Mochila {
       capacidade = o_capacidade;
     }
 
-    void setItem(Item o_item){
+    void setItem(Item *o_item){
       itens.push_back(o_item);
     }
 
@@ -26,7 +26,7 @@ class Mochila {
       return capacidade;
     }
 
-    Item getItem(int o_index){
+    Item* getItem(int o_index){
       return itens.at(o_index);
     }
 
