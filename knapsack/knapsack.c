@@ -2,7 +2,7 @@
 
     0/1 Knapsack problem with Dynamic Programming, Brute Force and Greedy Algorithm.
 
-    To run the program, just compile the file with the command "gcc -o main knapsack.c" and execute with the command "./main <test file name> <selected algorithm>". #1 for Dynamic Programming, #2 for Brute Force and #3 for Greedy Algorithm.
+    To run the program, just compile the file with the command "g++ -o main knapsack.c" and execute with the command "./main <test file name> <selected algorithm>". #1 for Dynamic Programming, #2 for Brute Force and #3 for Greedy Algorithm.
 
 */
 
