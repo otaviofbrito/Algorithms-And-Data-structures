@@ -29,10 +29,11 @@ public:
   vector<Item *> itens;
 };
 
-void guloso_aleatorio(Mochila *itens, float r = 0.1)
+void guloso_aleatorio(Mochila *itens, float r = 1)
 {
   int qtdRandom;
   int len = itens->itens.size();
+  vector<Item *> temp_itens = itens->itens;
 
   qtdRandom = len * r;
   cout << "\n " << qtdRandom << endl;
@@ -40,16 +41,27 @@ void guloso_aleatorio(Mochila *itens, float r = 0.1)
   sort(itens->itens.begin(), itens->itens.end(), comparePointers);
 
   int c = 0;
-  while (c != qtdRandom)
+  while (c < qtdRandom)
   {
-    int i = rand() % len;
-    if (itens->capacidade - itens->itens.at(i)->peso >= 0 && itens->itens.at(i)->position == 0)
+    int r_index = rand() % temp_itens.size();
+
+    if (itens->capacidade - temp_itens.at(r_index)->peso >= 0 && temp_itens.at(r_index)->position == 0)
     {
-      c++;
-      itens->capacidade -= itens->itens.at(i)->peso;
-      itens->total += itens->itens.at(i)->beneficio;
-      itens->itens.at(i)->position = 1;
+      itens->capacidade -= temp_itens.at(r_index)->peso;
+      itens->total += temp_itens.at(r_index)->beneficio;
+      temp_itens.at(r_index)->position = 1;
+
+      auto itr = std::remove_if(temp_itens.begin(), temp_itens.end(), [&](Item *a)
+                                { return a == temp_itens.at(r_index); });
+
+      temp_itens.erase(itr, temp_itens.end());
+    } else {
+      auto itr = std::remove_if(temp_itens.begin(), temp_itens.end(), [&](Item *a)
+                                { return a == temp_itens.at(r_index); });
+
+      temp_itens.erase(itr, temp_itens.end());
     }
+    c++;
   }
 
   for (int i = 0; i < len; i++)
