@@ -29,26 +29,37 @@ public:
   vector<Item *> itens;
 };
 
-void guloso_aleatorio(Mochila *itens, float r = 1)
+/*
+ r = porcentagem de itens aleatorios.
+
+ A funcao coloca os itens na mochila (define 'position' para 1 se ele cabe) e incrementa o total de beneficio.
+
+uma parte eh feita de maneira aleatoria (para diversificar o espaço de busca que será feito na busca local).
+
+*/
+void guloso_aleatorio(Mochila *ks, float r = 0)
 {
   int qtdRandom;
-  int len = itens->itens.size();
-  vector<Item *> temp_itens = itens->itens;
+  int len = ks->itens.size();
+  vector<Item *> temp_itens = ks->itens;  //copia o conjunto de itens
 
-  qtdRandom = len * r;
+  qtdRandom = len * r; //define quantidade de itens aleatorios
   cout << "\n " << qtdRandom << endl;
 
-  sort(itens->itens.begin(), itens->itens.end(), comparePointers);
+  sort(ks->itens.begin(), ks->itens.end(), comparePointers); //ordena por razao descrescente
 
+
+  //parte gulosa aleatoria
   int c = 0;
   while (c < qtdRandom)
   {
-    int r_index = rand() % temp_itens.size();
+    int r_index = rand() % temp_itens.size(); //seleciona um item aleatorio do conjunto
 
-    if (itens->capacidade - temp_itens.at(r_index)->peso >= 0 && temp_itens.at(r_index)->position == 0)
+     //quando um item eh consultado, ele eh removido do conjunto p/ evitar consultas repetidas 
+    if (ks->capacidade - temp_itens.at(r_index)->peso >= 0 && temp_itens.at(r_index)->position == 0)
     {
-      itens->capacidade -= temp_itens.at(r_index)->peso;
-      itens->total += temp_itens.at(r_index)->beneficio;
+      ks->capacidade -= temp_itens.at(r_index)->peso;
+      ks->total += temp_itens.at(r_index)->beneficio;
       temp_itens.at(r_index)->position = 1;
 
       auto itr = std::remove_if(temp_itens.begin(), temp_itens.end(), [&](Item *a)
@@ -64,13 +75,14 @@ void guloso_aleatorio(Mochila *itens, float r = 1)
     c++;
   }
 
+  //parte gulosa padrao
   for (int i = 0; i < len; i++)
   {
-    if (itens->capacidade - itens->itens.at(i)->peso >= 0 && itens->itens.at(i)->position == 0)
+    if (ks->capacidade - ks->itens.at(i)->peso >= 0 && ks->itens.at(i)->position == 0)
     {
-      itens->capacidade -= itens->itens.at(i)->peso;
-      itens->total += itens->itens.at(i)->beneficio;
-      itens->itens.at(i)->position = 1;
+      ks->capacidade -= ks->itens.at(i)->peso;
+      ks->total += ks->itens.at(i)->beneficio;
+      ks->itens.at(i)->position = 1;
     }
   }
 }
@@ -78,7 +90,7 @@ void guloso_aleatorio(Mochila *itens, float r = 1)
 Mochila *scant_test(char const *file_name, int *n_items, int *capacidad)
 {
 
-  Mochila *bag = new Mochila();
+  Mochila *knapsack = new Mochila();
 
   ifstream test_file;
   test_file.open("f1_l-d_kp_10_269");
@@ -92,7 +104,7 @@ Mochila *scant_test(char const *file_name, int *n_items, int *capacidad)
   test_file >> *n_items;
   test_file >> *capacidad;
 
-  bag->capacidade = *capacidad;
+  knapsack->capacidade = *capacidad;
 
   for (int i = 0; i < *n_items; i++)
   {
@@ -104,10 +116,10 @@ Mochila *scant_test(char const *file_name, int *n_items, int *capacidad)
     item->beneficio = ben;
     item->ratio = (double)ben / (double)pes;
 
-    bag->itens.push_back(item);
+    knapsack->itens.push_back(item);
   }
 
-  return bag;
+  return knapsack;
 }
 
 int main(int argc, char const *argv[])
@@ -115,7 +127,7 @@ int main(int argc, char const *argv[])
 
   int n_items, capacidad;
 
-  Mochila *bag;
+  Mochila *knapsack;
 
   /*
   if (argc != 3)
@@ -125,11 +137,11 @@ int main(int argc, char const *argv[])
   }
   */
 
-  bag = scant_test(argv[1], &n_items, &capacidad);
+  knapsack = scant_test(argv[1], &n_items, &capacidad);
 
-  guloso_aleatorio(bag);
+  guloso_aleatorio(knapsack);
 
-  cout << "Total: " << bag->total << endl;
+  cout << "Total: " << knapsack->total << endl;
 
   // imprimir_items(items, n_items);
 
