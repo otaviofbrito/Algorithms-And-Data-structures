@@ -37,66 +37,45 @@ public:
 uma parte eh feita de maneira aleatoria (para diversificar o espaço de busca que será feito na busca local).
 
 */
-void guloso_aleatorio(Mochila *ks, float r = 0)
+void guloso_aleatorio(Mochila *ks, float alfa = 0)
 {
-  int qtdRandom;
-  int len = ks->itens.size();
-  vector<Item *> temp_itens = ks->itens;  //copia o conjunto de itens
 
-  qtdRandom = len * r; //define quantidade de itens aleatorios
-  cout << "\n " << qtdRandom << endl;
+  sort(ks->itens.begin(), ks->itens.end(), comparePointers); // ordena por razao descrescente
+  vector<Item *> temp_itens = ks->itens;
 
-  sort(ks->itens.begin(), ks->itens.end(), comparePointers); //ordena por razao descrescente
-
-
-  //parte gulosa aleatoria
-  int c = 0;
-  while (c < qtdRandom)
+  while (!temp_itens.empty())
   {
-    //task: apply mersene twistter to randomized procedure
-    int r_index = rand() % temp_itens.size(); //seleciona um item aleatorio do conjunto
+    double c_min = temp_itens.front()->ratio;
+    double c_max = temp_itens.back()->ratio;
 
-     //quando um item eh consultado, ele eh removido do conjunto p/ evitar consultas repetidas 
-    if (ks->capacidade - temp_itens.at(r_index)->peso >= 0 && temp_itens.at(r_index)->position == 0)
+    // Create RCL
+    vector<Item *> RCL;
+    for (int i = 0; i < temp_itens.size(); i++)
     {
-      ks->capacidade -= temp_itens.at(r_index)->peso;
-      ks->total += temp_itens.at(r_index)->beneficio;
-      temp_itens.at(r_index)->position = 1;
-
-      auto itr = std::remove_if(temp_itens.begin(), temp_itens.end(), [&](Item *a)
-                                { return a == temp_itens.at(r_index); });
-
-      temp_itens.erase(itr, temp_itens.end());
-    } else {
-      auto itr = std::remove_if(temp_itens.begin(), temp_itens.end(), [&](Item *a)
-                                { return a == temp_itens.at(r_index); });
-
-      temp_itens.erase(itr, temp_itens.end());
+      Item *item = temp_itens.at(i);
+      double c = item->ratio;
+      if (c >= c_min + alfa * (c_max - c_min))
+      {
+        RCL.push_back(item);
+      }
     }
-    c++;
-  }
 
-  //parte gulosa padrao
-  for (int i = 0; i < len; i++)
-  {
-    if (ks->capacidade - ks->itens.at(i)->peso >= 0 && ks->itens.at(i)->position == 0)
+    int r_index = rand() % RCL.size();
+    Item *r_item = RCL.at(r_index);
+
+    if (ks->capacidade - r_item->peso >= 0 && r_item->position == 0)
     {
-      ks->capacidade -= ks->itens.at(i)->peso;
-      ks->total += ks->itens.at(i)->beneficio;
-      ks->itens.at(i)->position = 1;
+      ks->capacidade -= r_item->peso;
+      ks->total += r_item->beneficio;
+      r_item->position = 1;
     }
+
+    auto itr = std::remove_if(temp_itens.begin(), temp_itens.end(), [&](Item *a)
+                              { return a == RCL.at(r_index); });
+
+    temp_itens.erase(itr, temp_itens.end());
   }
 }
-
-void busca_local(Mochila *ks){
-  
-
-
-
-
-}
-
-
 
 Mochila *scant_test(char const *file_name, int *n_items, int *capacidad)
 {
