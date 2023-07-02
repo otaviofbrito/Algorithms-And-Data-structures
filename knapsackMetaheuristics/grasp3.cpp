@@ -29,7 +29,7 @@ public:
   vector<Item *> itens;
 };
 
-void busca_local(Mochila *ks)
+int busca_local(Mochila *ks)
 {
   double ratio_sum = (double)0;
   for(int i = 0; i < ks->itens.size(); i++){
@@ -60,6 +60,8 @@ void busca_local(Mochila *ks)
     }
 
   }
+
+  return ks->total;
 }
 
 void guloso_aleatorio(Mochila *ks, float alfa = 1)
@@ -102,7 +104,24 @@ void guloso_aleatorio(Mochila *ks, float alfa = 1)
   }
 }
 
-void grasp(){}
+int grasp(Mochila *ks, float alfa, int itr){
+  int sol = 0;
+
+  for(int k = 0; k<itr; k++){
+    guloso_aleatorio(ks, alfa);
+
+    int temp_sol = busca_local(ks);
+    if(temp_sol > sol){
+      sol = temp_sol;
+    }
+
+    for(int i = 0; i<ks->itens.size(); i++){
+      ks->itens.at(i)->position = 0;
+    }
+  }
+
+  return sol;
+}
 
 
 
@@ -159,9 +178,9 @@ int main(int argc, char const *argv[])
 
   knapsack = scant_test(argv[1], &n_items, &capacidad);
 
-  guloso_aleatorio(knapsack);
+  int sol = grasp(knapsack, 0.8, 100);
 
-  cout << "Total: " << knapsack->total << endl;
+  cout << "Total: " << sol << endl;
 
   // imprimir_items(items, n_items);
 

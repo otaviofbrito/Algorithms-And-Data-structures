@@ -37,26 +37,25 @@ public:
 uma parte eh feita de maneira aleatoria (para diversificar o espaço de busca que será feito na busca local).
 
 */
-void guloso_aleatorio(Mochila *ks, float r = 0)
+void guloso_aleatorio(Mochila *ks, float r = 1)
 {
   int qtdRandom;
   int len = ks->itens.size();
-  vector<Item *> temp_itens = ks->itens;  //copia o conjunto de itens
+  vector<Item *> temp_itens = ks->itens; // copia o conjunto de itens
 
-  qtdRandom = len * r; //define quantidade de itens aleatorios
+  qtdRandom = len * r; // define quantidade de itens aleatorios
   cout << "\n " << qtdRandom << endl;
 
-  sort(ks->itens.begin(), ks->itens.end(), comparePointers); //ordena por razao descrescente
+  sort(ks->itens.begin(), ks->itens.end(), comparePointers); // ordena por razao descrescente
 
-
-  //parte gulosa aleatoria
+  // parte gulosa aleatoria
   int c = 0;
   while (c < qtdRandom)
   {
-    //task: apply mersene twistter to randomized procedure
-    int r_index = rand() % temp_itens.size(); //seleciona um item aleatorio do conjunto
+    // task: apply mersene twistter to randomized procedure
+    int r_index = rand() % temp_itens.size(); // seleciona um item aleatorio do conjunto
 
-     //quando um item eh consultado, ele eh removido do conjunto p/ evitar consultas repetidas 
+    // quando um item eh consultado, ele eh removido do conjunto p/ evitar consultas repetidas
     if (ks->capacidade - temp_itens.at(r_index)->peso >= 0 && temp_itens.at(r_index)->position == 0)
     {
       ks->capacidade -= temp_itens.at(r_index)->peso;
@@ -67,7 +66,9 @@ void guloso_aleatorio(Mochila *ks, float r = 0)
                                 { return a == temp_itens.at(r_index); });
 
       temp_itens.erase(itr, temp_itens.end());
-    } else {
+    }
+    else
+    {
       auto itr = std::remove_if(temp_itens.begin(), temp_itens.end(), [&](Item *a)
                                 { return a == temp_itens.at(r_index); });
 
@@ -76,7 +77,7 @@ void guloso_aleatorio(Mochila *ks, float r = 0)
     c++;
   }
 
-  //parte gulosa padrao
+  // parte gulosa padrao
   for (int i = 0; i < len; i++)
   {
     if (ks->capacidade - ks->itens.at(i)->peso >= 0 && ks->itens.at(i)->position == 0)
@@ -88,15 +89,9 @@ void guloso_aleatorio(Mochila *ks, float r = 0)
   }
 }
 
-void busca_local(Mochila *ks){
-  
-
-
-
-
+void busca_local(Mochila *ks)
+{
 }
-
-
 
 Mochila *scant_test(char const *file_name, int *n_items, int *capacidad)
 {
