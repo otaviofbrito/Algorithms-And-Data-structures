@@ -5,11 +5,12 @@
 #include <vector>
 #include <cstdlib>
 #include <random>
+#include <time.h>
+#include <iomanip>
 
 using namespace std;
 
-
-//task: improve time complexity 
+// task: improve time complexity (greedy randomized)
 
 class Item
 {
@@ -34,7 +35,7 @@ public:
   vector<Item> itens;
 };
 
-Mochila pertubate(Mochila ks, int rate)
+Mochila perturbate(Mochila ks, int rate)
 {
   mt19937 rng(std::random_device{}());
   uniform_int_distribution<int> distribution(0, ks.itens.size() - 1);
@@ -60,13 +61,13 @@ Mochila pertubate(Mochila ks, int rate)
   return ks;
 }
 
-Mochila busca_local(Mochila ks, int itr)
+Mochila Iterated_Local_Search(Mochila ks, int itr)
 {
   Mochila temp;
   int r = 2;
   for (int i = 0; i < itr; i++)
   {
-    temp = pertubate(ks, r);
+    temp = perturbate(ks, r);
     if (ks.total < temp.total && temp.capacidade >= 0)
     {
       return temp;
@@ -76,7 +77,7 @@ Mochila busca_local(Mochila ks, int itr)
   return ks;
 }
 
-Mochila guloso_aleatorio(Mochila ks, float alfa)
+Mochila Greedy_Randomized_Construction(Mochila ks, float alfa)
 {
   mt19937 rng(std::random_device{}());
 
@@ -132,8 +133,8 @@ Mochila grasp(Mochila ks, float alfa, int itr, int ils_itr)
 
   for (int k = 0; k < itr; k++)
   {
-    temp_solution = guloso_aleatorio(ks, alfa);
-    temp_solution = busca_local(temp_solution, ils_itr);
+    temp_solution = Greedy_Randomized_Construction(ks, alfa);
+    temp_solution = Iterated_Local_Search(temp_solution, ils_itr);
     if (temp_solution.total > solution.total)
     {
       solution = temp_solution;
@@ -149,7 +150,7 @@ Mochila scant_test(char const *file_name, int *n_items, int *capacidad)
   Mochila knapsack;
 
   ifstream test_file;
-  test_file.open("test");
+  test_file.open("input_file");
 
   if (!test_file.is_open())
   {
@@ -181,26 +182,26 @@ Mochila scant_test(char const *file_name, int *n_items, int *capacidad)
 
 int main(int argc, char const *argv[])
 {
+  clock_t start, end;
 
   int n_items, capacidad;
 
   Mochila knapsack;
 
-  /*
-  if (argc != 3)
-  {
-    printf("Uso: %s <nome do arquivo de entrada> <algoritmo>\n", argv[0]);
-    return 1;
-  }
-  */
-
   knapsack = scant_test(argv[1], &n_items, &capacidad);
 
-  knapsack = grasp(knapsack, 0.95, 5, 50) ;
+  start = clock();
+  // grasp(knapsack, alfa, graspMaxIteration, ilsMaxIteration)
+  knapsack = grasp(knapsack, 0.95, 10, 20);
+
+  end = clock();
 
   cout << "Total: " << knapsack.total << endl;
+  double time_taken = double(end - start) / double(CLOCKS_PER_SEC);
 
-  // imprimir_items(items, n_items);
+  cout << "\n\nTime taken : " << fixed
+       << time_taken << setprecision(5);
+  cout << " sec \n\n " << endl;
 
   return 0;
 }
