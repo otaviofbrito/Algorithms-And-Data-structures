@@ -18,9 +18,9 @@ public:
   bool position = 0;
 };
 
-bool compare(const Item *obj1, const Item *obj2)
+bool compare(const Item obj1, const Item obj2)
 {
-  return obj1->ratio > obj2->ratio;
+  return obj1.ratio > obj2.ratio;
 }
 
 class Mochila
@@ -28,7 +28,7 @@ class Mochila
 public:
   int capacidade;
   int total = 0;
-  vector<Item> *itens;
+  vector<Item> itens;
 };
 
 Mochila pertubate(Mochila ks, int rate)
@@ -36,25 +36,26 @@ Mochila pertubate(Mochila ks, int rate)
   mt19937 rng(std::random_device{}());
   uniform_int_distribution<int> distribution(0, ks.itens.size() - 1);
 
-  Mochila perturbed = ks;
 
   for (int r = 0; r < rate; r++)
   {
     int r_index = distribution(rng);
 
-    if (ks.itens.at(r_index)->position == 0)
+    if (ks.itens.at(r_index).position == 0)
     {
-      perturbed.itens.at(r_index)->position = 1;
-      perturbed.total += perturbed.itens.at(r_index)->beneficio;
-      perturbed.capacidade -= perturbed.itens.at(r_index)->peso;
+      ks.itens.at(r_index).position = 1;
+      ks.total += ks.itens.at(r_index).beneficio;
+      ks.capacidade -= ks.itens.at(r_index).peso;
     }
     else
     {
-      perturbed.itens.at(r_index)->position = 0;
-      perturbed.total -= perturbed.itens.at(r_index)->beneficio;
-      perturbed.capacidade += perturbed.itens.at(r_index)->peso;
+      ks.itens.at(r_index).position = 0;
+      ks.total -= ks.itens.at(r_index).beneficio;
+      ks.capacidade += ks.itens.at(r_index).peso;
     }
   }
+
+  return ks;
 }
 
 Mochila busca_local(Mochila ks, int itr)
@@ -66,8 +67,7 @@ Mochila busca_local(Mochila ks, int itr)
     temp = pertubate(ks, r);
     if (ks.total < temp.total && temp.capacidade >= 0)
     {
-      ks = temp;
-      return ks;
+      return temp;
     }
     r++;
   }
@@ -79,19 +79,19 @@ Mochila guloso_aleatorio(Mochila ks, float alfa)
   mt19937 rng(std::random_device{}());
   // ordena por razao descrescente
 
-  vector<Item *> temp_itens = ks.itens;
+  vector<Item> temp_itens = ks.itens;
 
   while (!temp_itens.empty())
   {
-    double c_min = temp_itens.back()->ratio;
-    double c_max = temp_itens.front()->ratio;
+    double c_min = temp_itens.back().ratio;
+    double c_max = temp_itens.front().ratio;
 
     // Create RCL
-    vector<Item *> RCL;
+    vector<Item> RCL;
     for (int i = 0; i < temp_itens.size(); i++)
     {
-      Item *item = temp_itens.at(i);
-      double c = item->ratio;
+      Item item = temp_itens.at(i);
+      double c = item.ratio;
       if (c >= c_min + alfa * (c_max - c_min))
       {
         RCL.push_back(item);
@@ -100,17 +100,23 @@ Mochila guloso_aleatorio(Mochila ks, float alfa)
 
     uniform_int_distribution<int> distribution(0, RCL.size() - 1);
     int r_index = distribution(rng);
-    Item *r_item = RCL.at(r_index);
+    Item r_item = RCL.at(r_index);
 
-    if (ks.capacidade - r_item->peso >= 0 && r_item->position == 0)
+    if (ks.capacidade - r_item.peso >= 0 && r_item.position == 0)
     {
-      ks.capacidade -= r_item->peso;
-      ks.total += r_item->beneficio;
-      r_item->position = 1;
+      ks.capacidade -= r_item.peso;
+      ks.total += r_item.beneficio;
+      for (int j = 0; j < ks.itens.size(); j++)
+      {
+        if (ks.itens.at(j).id == r_item.id)
+        {
+          ks.itens.at(j).position = 1;
+        }
+      }
     }
 
-    auto itr = std::remove_if(temp_itens.begin(), temp_itens.end(), [&](Item *a)
-                              { return a == RCL.at(r_index); });
+    auto itr = std::remove_if(temp_itens.begin(), temp_itens.end(), [&](Item a)
+                              { return a.id == RCL.at(r_index).id; });
 
     temp_itens.erase(itr, temp_itens.end());
   }
@@ -126,15 +132,10 @@ Mochila grasp(Mochila ks, float alfa, int itr)
   for (int k = 0; k < itr; k++)
   {
     temp_solution = guloso_aleatorio(ks, alfa);
-    temp_solution = busca_local(temp_solution);
+    temp_solution = busca_local(temp_solution, 5);
     if (temp_solution.total > solution.total)
     {
       solution = temp_solution;
-    }
-
-    for (int i = 0; i < ks.itens.size(); i++)
-    {
-      ks.itens.at(i)->position = 0;
     }
   }
 
@@ -171,7 +172,7 @@ Mochila scant_test(char const *file_name, int *n_items, int *capacidad)
     item.beneficio = ben;
     item.ratio = (double)ben / (double)pes;
 
-    knapsack.itens->push_back(item);
+    knapsack.itens.push_back(item);
   }
 
   return knapsack;
@@ -194,7 +195,7 @@ int main(int argc, char const *argv[])
 
   knapsack = scant_test(argv[1], &n_items, &capacidad);
 
-  knapsack = grasp(knapsack, 0.8, 10);
+  knapsack = grasp(knapsack, 0.7, 500);
 
   cout << "Total: " << knapsack.total << endl;
 
