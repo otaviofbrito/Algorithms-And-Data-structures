@@ -8,6 +8,9 @@
 
 using namespace std;
 
+
+//task: improve time complexity 
+
 class Item
 {
 public:
@@ -35,7 +38,6 @@ Mochila pertubate(Mochila ks, int rate)
 {
   mt19937 rng(std::random_device{}());
   uniform_int_distribution<int> distribution(0, ks.itens.size() - 1);
-
 
   for (int r = 0; r < rate; r++)
   {
@@ -77,7 +79,6 @@ Mochila busca_local(Mochila ks, int itr)
 Mochila guloso_aleatorio(Mochila ks, float alfa)
 {
   mt19937 rng(std::random_device{}());
-  // ordena por razao descrescente
 
   vector<Item> temp_itens = ks.itens;
 
@@ -123,7 +124,7 @@ Mochila guloso_aleatorio(Mochila ks, float alfa)
   return ks;
 }
 
-Mochila grasp(Mochila ks, float alfa, int itr)
+Mochila grasp(Mochila ks, float alfa, int itr, int ils_itr)
 {
   sort(ks.itens.begin(), ks.itens.end(), compare);
   Mochila solution = ks;
@@ -132,7 +133,7 @@ Mochila grasp(Mochila ks, float alfa, int itr)
   for (int k = 0; k < itr; k++)
   {
     temp_solution = guloso_aleatorio(ks, alfa);
-    temp_solution = busca_local(temp_solution, 5);
+    temp_solution = busca_local(temp_solution, ils_itr);
     if (temp_solution.total > solution.total)
     {
       solution = temp_solution;
@@ -195,7 +196,7 @@ int main(int argc, char const *argv[])
 
   knapsack = scant_test(argv[1], &n_items, &capacidad);
 
-  knapsack = grasp(knapsack, 0.7, 500);
+  knapsack = grasp(knapsack, 0.95, 5, 50) ;
 
   cout << "Total: " << knapsack.total << endl;
 
