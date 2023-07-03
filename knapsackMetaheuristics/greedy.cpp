@@ -1,37 +1,23 @@
 #include <string.h>
-#include <iostream>
-#include <fstream>
 #include <algorithm>
-#include <vector>
 #include <cstdlib>
 #include <random>
 #include <time.h>
 #include <iomanip>
+#include <vector>
+
+#include "./dependencies/mochila.h"
+#include "./dependencies/scanFile.cpp"
+
 
 using namespace std;
 
-class Item
-{
-public:
-  int id;
-  int peso;
-  int beneficio;
-  double ratio;
-  bool position = 0;
-};
 
 bool compare(const Item obj1, const Item obj2)
 {
   return obj1.ratio > obj2.ratio;
 }
 
-class Mochila
-{
-public:
-  int capacidade;
-  int total = 0;
-  vector<Item> itens;
-};
 
 Mochila greedy(Mochila ks)
 {
@@ -50,41 +36,6 @@ Mochila greedy(Mochila ks)
   return ks;
 }
 
-Mochila scant_test(char const *file_name, int *n_items, int *capacidad)
-{
-
-  Mochila knapsack;
-
-  ifstream test_file;
-  test_file.open("test");
-
-  if (!test_file.is_open())
-  {
-    cout << "UNABLE TO LOCATE FILE";
-    exit(0);
-  }
-
-  test_file >> *n_items;
-  test_file >> *capacidad;
-
-  knapsack.capacidade = *capacidad;
-
-  for (int i = 0; i < *n_items; i++)
-  {
-    int pes, ben;
-    test_file >> ben;
-    test_file >> pes;
-    Item item;
-    item.id = i;
-    item.peso = pes;
-    item.beneficio = ben;
-    item.ratio = (double)ben / (double)pes;
-
-    knapsack.itens.push_back(item);
-  }
-
-  return knapsack;
-}
 
 int main(int argc, char const *argv[])
 {
@@ -94,7 +45,7 @@ int main(int argc, char const *argv[])
 
   Mochila knapsack;
 
-  knapsack = scant_test(argv[1], &n_items, &capacidad);
+  knapsack = scan_file(argv[1], &n_items, &capacidad);
 
   start = clock();
 
