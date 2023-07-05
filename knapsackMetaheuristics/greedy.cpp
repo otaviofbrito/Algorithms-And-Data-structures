@@ -13,6 +13,7 @@
 using namespace std;
 
 
+
 bool compare(const Item obj1, const Item obj2)
 {
   return obj1.ratio > obj2.ratio;
@@ -57,8 +58,8 @@ int main(int argc, char const *argv[])
   double time_taken = double(end - start) / double(CLOCKS_PER_SEC);
 
   cout << "\n\nTime taken : " << fixed
-       << time_taken << setprecision(5);
-  cout << " sec \n\n " << endl;
+       << time_taken *1000 << setprecision(5);
+  cout << " ms \n\n " << endl;
 
   return 0;
 }

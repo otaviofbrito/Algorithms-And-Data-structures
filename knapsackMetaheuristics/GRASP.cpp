@@ -13,13 +13,18 @@
 
 using namespace std;
 
-// task: improve time complexity (greedy randomized)
 
 bool compare(const Item obj1, const Item obj2)
 {
   return obj1.ratio > obj2.ratio;
 }
 
+/*
+
+Busca local, recebe uma solução parcial 'perturbada' obitda na ILS
+ realiza a troca de 2 bits da solução como função de vizinhança
+Implementado com base no First improvement, retorna a primeira solução aprimorante
+*/
 Mochila local_search(Mochila ks)
 {
 
@@ -45,12 +50,12 @@ Mochila local_search(Mochila ks)
     {
       temp.itens.at((len - 1) - r).position = 1;
       temp.total += temp.itens.at((len - 1) - r).beneficio;
-      temp.capacidade -= temp.itens.at((len - 1)  - r).peso;
+      temp.capacidade -= temp.itens.at((len - 1) - r).peso;
     }
     else
     {
-      temp.itens.at((len - 1)  - r).position = 0;
-      temp.total -= temp.itens.at((len - 1)  - r).beneficio;
+      temp.itens.at((len - 1) - r).position = 0;
+      temp.total -= temp.itens.at((len - 1) - r).beneficio;
       temp.capacidade += temp.itens.at((len - 1) - r).peso;
     }
 
@@ -66,6 +71,9 @@ Mochila local_search(Mochila ks)
   return ks;
 }
 
+/*
+Função de perturbação da ILS, altera aleatoriamente o estado dos itens da mochila, aumenta o nível de perturbaçao gradativamente.
+*/
 Mochila perturbate(Mochila ks, int rate)
 {
   mt19937 rng(std::random_device{}());
@@ -91,6 +99,9 @@ Mochila perturbate(Mochila ks, int rate)
   return ks;
 }
 
+/*
+ILS, utilizada com o intuito de escapar de ótimos locais, em busca do ótimo global.
+*/
 Mochila Iterated_Local_Search(Mochila ks, int itr)
 {
   Mochila temp;
@@ -107,6 +118,11 @@ Mochila Iterated_Local_Search(Mochila ks, int itr)
   }
   return ks;
 }
+
+/*
+Algoritmo guloso-aleatório, recebe um alfa como parâmetro que define sua aleatoriedade, quanto mais próximo de 1 mais de característica gulosa é a solução, quanto mais próximo de 0 mais aleatória.
+Utiliza de um vetor RCL(Restricted candidate list), uma lista dos melhores canditados para serem selecionados, tem impacto direto na aleatoriedade e gulosidade da solução.
+*/
 
 Mochila Greedy_Randomized_Construction(Mochila ks, float alfa)
 {
@@ -154,6 +170,10 @@ Mochila Greedy_Randomized_Construction(Mochila ks, float alfa)
   return ks;
 }
 
+
+/*
+Método grasp, alfa representa a aleatoridade da solução gulosa obtida na fase de construção, GRASPmax representa a quantidade iteração do método e ILSmax representa a quantidade de iteração da busca local, no caso ILS.
+*/
 Mochila grasp(Mochila ks, float alfa, int GRASPmax, int ILSmax)
 {
   sort(ks.itens.begin(), ks.itens.end(), compare);
@@ -185,7 +205,7 @@ int main(int argc, char const *argv[])
 
   start = clock();
   // grasp(knapsack, alfa, graspMaxIteration, ilsMaxIteration)
-  knapsack = grasp(knapsack, 0.9, 5, 100);
+  knapsack = grasp(knapsack, 0.9, 10, 100);
 
   end = clock();
 
@@ -193,8 +213,8 @@ int main(int argc, char const *argv[])
   double time_taken = double(end - start) / double(CLOCKS_PER_SEC);
 
   cout << "\n\nTime taken : " << fixed
-       << time_taken << setprecision(5);
-  cout << " sec \n\n " << endl;
+       << time_taken * 1000 << setprecision(5);
+  cout << " ms \n\n " << endl;
 
   return 0;
 }

@@ -39,7 +39,6 @@ int progDinamica(Mochila ks)
   return tabela[ks.itens.size() % 2][ks.capacidade];
 }
 
-
 int main(int argc, char const *argv[])
 {
   clock_t start, end;
@@ -60,9 +59,8 @@ int main(int argc, char const *argv[])
   double time_taken = double(end - start) / double(CLOCKS_PER_SEC);
 
   cout << "\n\nTime taken : " << fixed
-       << time_taken << setprecision(5);
-  cout << " sec \n\n " << endl;
-
+       << time_taken * 1000 << setprecision(5);
+  cout << " ms \n\n " << endl;
 
   return 0;
 }
